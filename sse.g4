@@ -1,10 +1,12 @@
+grammar sse;
+
 /* [1] */
 SliceOpt
   : Slice
   | ProjectOpt
   ;
 
-[2]
+/* [2] */
 ProjectOpt
   : Project
   | GroupGraphPatternNoSub
@@ -23,7 +25,7 @@ GroupGraphPatternSub
   | SubSelect
   ;
 
-/ * [5] */    	
+/* [5] */
 SubSelect
   : Slice
   | Project
@@ -31,39 +33,39 @@ SubSelect
 
 /* [6] */   	
 Slice
-  : "(" "slice" ProjectOpt ")"
+  : '(' 'slice' ProjectOpt ')'
   ;
   
 /* [7] */    	
 Project
-  : "(" "project" "(" (TERM)+ ")" GroupGraphPatternNoSub ")"
+  : '(' 'project' '(' (TERM)+ ')' GroupGraphPatternNoSub ')'
   ;
   
 /* [8] */    	
 BGP
-  : "(" "bgp" (Triple)+ ")"
+  : '(' 'bgp' (Triple)+ ')'
   ;
   
 /* [9] */    	
 Triple
-  : "(" "triple" TERM TERM TERM ")"
+  : '(' 'triple' TERM TERM TERM ')'
   ;
   
 /* [10] */    	
 Join
-  : "(" "join" GroupGraphPatternSub GroupGraphPatternSub ")"
+  : '(' 'join' GroupGraphPatternSub GroupGraphPatternSub ')'
   ;
   
 /* [11] */    	
-<TERM>
-  : "?" ([a-z])+
-  | "_" ([a-z])+
-  | "<" ([^>])* ">"
+TERM
+  : '?' ([a-z])+
+  | '_' ([a-z])+
+  | '<' ([^>])* '>'
   | '"' ([^\"])* '"'
-  | "'" ([^'])* "'"
+  | '\'' ([^'])* '\''
   ;
   
 /* [12] */    	
-PASSED TOKENS
-  : ([ \t\r\n])+
+PASSED_TOKENS
+  : ([ \t\r\n])+ -> channel(HIDDEN)
   ;
